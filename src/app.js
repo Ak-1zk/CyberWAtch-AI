@@ -2,17 +2,18 @@ const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
 
-const authRoutes = require("./routes/auth.routes");
-const scanRoutes = require("./routes/scan.routes");
-
 const app = express();
 
+// 🔗 Connect to MongoDB
 connectDB();
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
-app.use("/api/scan", scanRoutes);
+// Test route
+app.get("/", (req, res) => {
+  res.send("CyberWatch AI Backend + MongoDB connected ✅");
+});
 
 module.exports = app;
