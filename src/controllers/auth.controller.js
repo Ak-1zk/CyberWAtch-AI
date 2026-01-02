@@ -2,22 +2,69 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+// REGISTER
 exports.register = async (req, res) => {
-  const hashed = await bcrypt.hash(req.body.password, 10);
-  const user = await User.create({
-    ...req.body,
-    password: hashed
-  });
-  res.json({ message: "User registered" });
+  try {
+    const { name, email, password } = req.body;
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+      permissions: {
+        links: true,
+        emails: true,
+        messages: true,
+        qr: false,
+        calls: false
+      }
+    });
+
+    res.status(201).json({
+      message: "User registered successfully"
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
 
+// LOGIN
 exports.login = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(401).json({ error: "Invalid user" });
+  try {
+    const { email, password } = req.body;
 
-  const match = await bcrypt.compare(req.body.password, user.password);
-  if (!match) return res.status(401).json({ error: "Wrong password" });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-  res.json({ token });
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        permissions: user.permissions
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+
+    res.json({
+      message: "Login successful",
+      token,
+      permissions: user.permissions
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 };
