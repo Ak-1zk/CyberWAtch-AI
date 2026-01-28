@@ -1,0 +1,4 @@
+id,subject,body,url,label
+1,"Verify Account","Your bank account is blocked","http://fakebank.com","phishing"
+2,"Reset Password","Click link to reset password","http://reset-now.com","phishing"
+3,"Security Alert","Unusual login detected","http://secure-login.com","phishing"
