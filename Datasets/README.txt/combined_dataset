@@ -1,5 +1,0 @@
-id,text,channel,url,label
-1,"Verify your bank account now","email","http://fakebank.com","phishing"
-2,"Win ₹10,000 click link","sms","http://reward.com","spam"
-3,"Meeting at 3 PM","email","","legitimate"
-4,"OTP is 345212","sms","","legitimate"
