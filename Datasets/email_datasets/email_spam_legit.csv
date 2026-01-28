@@ -1,0 +1,5 @@
+id,subject,body,label
+1,"Win Free Prize","Click here to win $1000","spam"
+2,"Meeting Reminder","Team meeting at 10 AM","legitimate"
+3,"Invoice Attached","Please see invoice","legitimate"
+4,"Urgent Offer","Limited time offer click now","spam"
