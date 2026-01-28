@@ -1,0 +1,3 @@
+id,message,url,label
+1,"Your bank account blocked verify now","http://bank-secure.com","smishing"
+2,"KYC pending click here","http://kyc-verify.com","smishing"
